@@ -1,11 +1,20 @@
 package com.cos.blog.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+//lombok
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity //User 클래스가 mysql에 테이블이 생성된다.
 public class User {
     @Id//primary key
@@ -21,7 +30,7 @@ public class User {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @ColumnDefault("'users'") //" 'user' "로 써야함!
+    @ColumnDefault("'user'") //" 'user' "로 써야함!
     private String role; //Enum을 쓰는게 좋지만, 지금은 String사용.
 
     @CreationTimestamp //시간이 자동 입력됨.
