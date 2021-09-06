@@ -4,6 +4,7 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -114,7 +115,7 @@ public class DummyControllerTest {
         //save 메소드는 id를 없이 사용되면 insert 기능
         //id를 넘겨주고 그 id에 맞는 데이터 값이 있으면 update
         //id를 넘겨줬는데, 그 id에 대한 데이터 없으면 insert
-        return null;
+        return user;
     }
 
     //@Transactional으로 update하기.(더티 체킹)
@@ -133,6 +134,18 @@ public class DummyControllerTest {
         user.setUsername(requestUser.getUsername());
         user.setPassword(requestUser.getPassword());
         user.setEmail(requestUser.getEmail());
-        return null;
+        return user;
+    }
+
+    //delete
+    @DeleteMapping("/dummy/user/{id}")
+    public String delete(@PathVariable int id){
+        try{
+            userRepository.deleteById(id);
+        }catch(EmptyResultDataAccessException e){
+            return "삭제 실패했습니다. 해당 id는 데이터베이스에 없습니다.";
+        }
+
+        return "삭제됐습니다! id: "+id;
     }
 }
