@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy =  GenerationType.IDENTITY) //넘버링 전략, 프로젝트에 연결된 db의 넘버링 전략을 따라(identity전략)
     private int id; //시퀀스, auto-increment
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30, unique = true)
     private String username;
 
     @Column(nullable = false, length =  100) //해쉬때문에 넉넉히 잡음
