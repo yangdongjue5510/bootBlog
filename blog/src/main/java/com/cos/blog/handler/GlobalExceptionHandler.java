@@ -1,5 +1,7 @@
 package com.cos.blog.handler;
 
+import com.cos.blog.dto.ResponseDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = IllegalArgumentException.class) //특정 예외가 메소드에 걸리게 설정
-    public String handlerArgumentException(IllegalArgumentException e){
-        return "<h1>"+e.getMessage()+"</h1>";
+//    public String handlerArgumentException(IllegalArgumentException e){
+//        return "<h1>"+e.getMessage()+"</h1>";
+//    }
+    public ResponseDto<String> handArgumentException(Exception e){
+        return new ResponseDto<String>(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage());
     }
 }
