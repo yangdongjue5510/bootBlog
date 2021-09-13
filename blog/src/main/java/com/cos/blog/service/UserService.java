@@ -18,9 +18,9 @@ public class UserService {
         userRepository.save(user);//잘못된 예외발생시 GlobalExceptionHandler가 예외처리
     }
 
-    @Transactional(readOnly = true)//select 할 때 트랜잭션 시작, 서비스 종료시까지 트랜잭션 종료(정합성)
-    public User login(User user){
-        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-    }
+//    @Transactional(readOnly = true)//select 할 때 트랜잭션 시작, 서비스 종료시까지 트랜잭션 종료(정합성)
+//    public User login(User user){
+//        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+//    }
 }
 
