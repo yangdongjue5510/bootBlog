@@ -1,8 +1,10 @@
 package com.cos.blog.service;
 
+import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Transactional //메소드 속 여러 트랜잭션이 하나의 트랜잭션을 묶임
     public void signUp(User user){
+        String rawPassword = user.getPassword();
+        String encPassword = encoder.encode(rawPassword);
+        user.setRole(RoleType.USER);
+        user.setPassword(encPassword);
         userRepository.save(user);//잘못된 예외발생시 GlobalExceptionHandler가 예외처리
     }
 
