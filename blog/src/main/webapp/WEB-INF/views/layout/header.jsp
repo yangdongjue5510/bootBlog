@@ -6,10 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Yangdongjue blog</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -25,14 +27,34 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="user/loginForm">로그인</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="user/joinForm">회원가입</a>
-            </li>
-        </ul>
+        <c:choose>
+            <c:when test=""></c:when>
+        </c:choose>
+        <c:choose>
+            <c:when test="${empty sessionScope.principal}">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog/user/loginForm">로그인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog/user/joinForm">회원가입</a>
+                    </li>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog/board/writeForm">글쓰기</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog/user/userForm">회원정보</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog/user/logout">회원정보</a>
+                    </li>
+                </ul>
+            </c:otherwise>
+        </c:choose>
     </div>
 </nav>
 <br>
