@@ -29,8 +29,8 @@ public class Board {
     @Lob //대용량 데이터를 다룰 때 사용
     private String content; //섬머노트 라이브러리 <html>태그가 섞여서 디자인이 된다.
 
-    @ColumnDefault("0") //default value
-    private int count;
+    //@ColumnDefault("0") //default value 그냥 직접입력하는걸로 변경.
+    private int count; //조회수
 
     //자바에서 객체를 저장하면, DB에서는 FK로 구현된다.
     //객체를 다루려면, 관계를 설정해줘야 한다.
