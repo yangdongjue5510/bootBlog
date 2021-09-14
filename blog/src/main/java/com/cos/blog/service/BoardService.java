@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 //스프링이 컴포넌트 스캔을 통해서 Bean에 자동 등록. IoC를 해줌
 @Service
@@ -21,6 +23,10 @@ public class BoardService {
         board.setCount(0);
         board.setUser(user);
         boardRepository.save(board);
+    }
+
+    public List<Board> postList() {
+        return boardRepository.findAll();
     }
 }
 
