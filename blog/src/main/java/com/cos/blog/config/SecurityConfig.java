@@ -1,7 +1,11 @@
 package com.cos.blog.config;
 
+import com.cos.blog.config.auth.PrincipalDetail;
+import com.cos.blog.config.auth.PrincipalDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,9 +18,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true) //특정 주소를 접근하면 권한/인증을 미리 체크하겠다는 의
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private PrincipalDetailService principalDetailService;
+
     @Bean //IoC / BCryptPasswordEncoder객체를 스프링이 관리
     public BCryptPasswordEncoder encodePWD(){
         return new BCryptPasswordEncoder();
+    }
+    //password를 어떻게 해쉬화했는지를 알려줘야 DB의 비번과 로그인시 비번을 비교가능!
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(principalDetailService).passwordEncoder(encodePWD());
     }
 
     @Override
@@ -30,6 +42,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     .authenticated() // 인증해야 접근 가능
                 .and() // 인증이 필요한 경우
                     .formLogin() // 로그인 할 수 있도록 한다.
-                    .loginPage("/auth/loginForm"); //이 로그인 페이지에서
+                    .loginPage("/auth/loginForm") //이 로그인 페이지에서
+                    .loginProcessingUrl("/auth/loginProc") //시큐리티가 해당 주소로 오는  로그인 가로채고 수행
+                    .defaultSuccessUrl("/"); //요청이 성공하고 나서 해당 주소로 이동.
+                    //.failureUrl("/auth/loginForm");//실패시 해당 주소로 이동.
     }
 }
