@@ -3,6 +3,9 @@ package com.cos.blog.controller;
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +18,10 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping({"/", ""})
-    public String index(Model model){//스프링에서 데이터를 가져올 땐 Model이 필요!!
-        model.addAttribute("boards", boardService.postList());
+    public String index(Model model, @PageableDefault(size=3, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
+        //스프링에서 데이터를 가져올 땐 Model이 필요!! & 페이지 별로 받기 위해 페이지 기준을 설정하는 pageable!
+        //URI에 ?page=숫자 로 페이지별 이동 가능!
+        model.addAttribute("boards", boardService.postList(pageable));
         return "index"; //그냥 컨트롤러는 return시 viewResolver가 작동! -> 해당 인덱스 페이지로 모델의 정보를 들고 이동!
     }
     //컨트롤러에서는 어떻게 세션을 찾을까?
