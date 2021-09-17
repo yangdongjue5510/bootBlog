@@ -6,6 +6,9 @@ let index = {
         // $("#btn-login").on("click",()=>{
         //     this.login();
         // });//btn-login을 찾아 리스너를 킨다.
+        $("#btn-delete").on("click",()=>{
+            this.deleteById();
+        });
     },
     save : function(){
         let data = {
@@ -25,6 +28,23 @@ let index = {
             //성공시 수행
             console.log(resp);
             alert("글쓰기 완료!");
+            location.href = "/"; //응답이 정상일때 출력할 링크
+        }).fail(function (error) {
+            //실패시 수행
+            alert(JSON.stringify(error)); //에러도 json객체로 바꿈
+
+        });//ajax 통신을 이용해서 2개의 데이터를 json으로 변경해 insert요청!
+    },
+    deleteById : function(){
+        //ajax 호출 시 비동기 호출
+        var id = $("#id").text();
+        $.ajax({
+            type : "DELETE",
+            url : "/api/board/"+id,
+            dataType: "json"
+        }).done(function (resp) {
+            //성공시 수행
+            alert("글삭제 완료!");
             location.href = "/"; //응답이 정상일때 출력할 링크
         }).fail(function (error) {
             //실패시 수행
