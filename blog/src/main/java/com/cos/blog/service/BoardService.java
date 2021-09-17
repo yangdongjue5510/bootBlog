@@ -30,5 +30,12 @@ public class BoardService {
     public Page<Board> postList(Pageable pageable) {
         return boardRepository.findAll(pageable);
     } //찾아서 페이지에 맞도록 분류하고 페이지 객체로 반환
+
+    public Board postDetail(int id){
+        return boardRepository.findById(id)
+                .orElseThrow(()->{
+                    return new IllegalArgumentException("글 상세보기 실패 : id를 찾지 못함");
+                });
+    }
 }
 
