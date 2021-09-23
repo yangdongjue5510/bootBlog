@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,11 @@ public class UserApiController {
         userService.signUp(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);//정상작동을 알림
     }
-
+    @PutMapping("/user")
+    public ResponseDto<Integer> update(@RequestBody User user){
+        userService.updateUser(user);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
     //전통적 로그인 구현
 //    @PostMapping("/api/user/login")
 //    public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){

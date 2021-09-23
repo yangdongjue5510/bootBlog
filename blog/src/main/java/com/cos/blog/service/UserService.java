@@ -26,6 +26,20 @@ public class UserService {
         userRepository.save(user);//잘못된 예외발생시 GlobalExceptionHandler가 예외처리
     }
 
+    @Transactional
+    public void updateUser(User user){
+        //수정은 영속성 컨텍스트에 user오브젝트를 영속화 시키고, 영속화된 user 오브젝트를 수정하는 방법
+        //select하면 user오브젝트가 영속화가 된다. -> 영속화된 오브젝트를 변경하면 DB에 flush!
+        User persistence = userRepository.findById(user.getId()).orElseThrow(()->{
+            return new IllegalArgumentException("회원찾기 실패");
+        });
+        String rawPassword = user.getPassword();
+        String encPassword = encoder.encode(rawPassword);
+        persistence.setPassword(encPassword);
+        persistence.setEmail(user.getEmail());
+        //트랜잭션 종료시 자동 커밋! (더티커밋!)
+    }
+
 //    @Transactional(readOnly = true)//select 할 때 트랜잭션 시작, 서비스 종료시까지 트랜잭션 종료(정합성)
 //    public User login(User user){
 //        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
