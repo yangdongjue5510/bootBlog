@@ -7,7 +7,7 @@ let index = {
         //     this.login();
         // });//btn-login을 찾아 리스너를 킨다.
         $("#btn-update").on("click",()=>{
-            this.save();
+            this.update();
         });
     },
     save : function(){
@@ -49,7 +49,7 @@ let index = {
         }).done(function (resp) {//resp에는 json객체가 있겠죠.
             //성공시 수행
             console.log(resp);
-            alert("회원수완료");
+            alert("회원수정 완료");
             location.href = "/"; //응답이 정상일때 출력할 링크
         }).fail(function (error) {
             //실패시 수행
