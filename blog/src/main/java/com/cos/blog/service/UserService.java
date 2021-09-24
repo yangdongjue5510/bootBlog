@@ -4,6 +4,10 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +20,7 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder encoder;
+
 
     @Transactional //메소드 속 여러 트랜잭션이 하나의 트랜잭션을 묶임
     public void signUp(User user){
@@ -37,6 +42,7 @@ public class UserService {
         String encPassword = encoder.encode(rawPassword);
         persistence.setPassword(encPassword);
         persistence.setEmail(user.getEmail());
+
         //트랜잭션 종료시 자동 커밋! (더티커밋!)
     }
 
