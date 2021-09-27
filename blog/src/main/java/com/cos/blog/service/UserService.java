@@ -21,7 +21,13 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-
+    @Transactional(readOnly = true)
+    public User findUser(String email){
+        User user = userRepository.findByEmail(email).orElseGet(()->{
+            return new User();//못찾으면 빈객
+        });
+        return user;
+    }
     @Transactional //메소드 속 여러 트랜잭션이 하나의 트랜잭션을 묶임
     public void signUp(User user){
         String rawPassword = user.getPassword();
@@ -38,11 +44,13 @@ public class UserService {
         User persistence = userRepository.findById(user.getId()).orElseThrow(()->{
             return new IllegalArgumentException("회원찾기 실패");
         });
-        String rawPassword = user.getPassword();
-        String encPassword = encoder.encode(rawPassword);
-        persistence.setPassword(encPassword);
-        persistence.setEmail(user.getEmail());
-
+        //oAuth 값이 없어야 이메일과 비밀번호 수정 가능
+        if(persistence.getOAuth()==null || persistence.getOAuth().equals("") ){
+            String rawPassword = user.getPassword();
+            String encPassword = encoder.encode(rawPassword);
+            persistence.setPassword(encPassword);
+            persistence.setEmail(user.getEmail());
+        }
         //트랜잭션 종료시 자동 커밋! (더티커밋!)
     }
 

@@ -22,7 +22,7 @@ public class User {
     @GeneratedValue(strategy =  GenerationType.IDENTITY) //넘버링 전략, 프로젝트에 연결된 db의 넘버링 전략을 따라(identity전략)
     private int id; //시퀀스, auto-increment
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 100 , unique = true)
     private String username;
 
     @Column(nullable = false, length =  100) //해쉬때문에 넉넉히 잡음
@@ -37,6 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)//DB에는 RoleType이란게 없으니까 이 속성이 문자열임을 알
     private RoleType role; //Enum을 쓰는 예시. ADMIN, USER
 
+    private String oAuth; //kakao, google
     @CreationTimestamp //시간이 자동 입력됨.
     private Timestamp createDate;
 }
