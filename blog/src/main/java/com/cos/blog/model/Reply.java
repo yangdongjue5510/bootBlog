@@ -26,6 +26,8 @@ public class Reply {
     @ManyToOne//Many reply to One board
     @JoinColumn(name="boardId")
     private Board board;
+    //순환참조 발생 (board가 가진 reply가 board를 가지고 있다...?!)
+    //board 안에 @JsonIgnoreProperties로 board에서 reply를 호출할 때 이 녀석은 무시한다.
 
     @ManyToOne
     @JoinColumn(name = "userId")

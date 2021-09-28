@@ -1,5 +1,6 @@
 package com.cos.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +43,8 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     //LAZY : board를 불러온다고 무조건 가져올 필요는 없다!(기본값으로 설정되어잇음)
     //EAGER : 게시물이 불러오면 무조건 조인해서 가져와야됨!
-    private List<Reply> reply;
+    @JsonIgnoreProperties({"board"})//무한참조를 막자!!
+    private List<Reply> replys;
 
     @CreationTimestamp
     private Timestamp createDate;

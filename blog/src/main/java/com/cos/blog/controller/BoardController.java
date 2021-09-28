@@ -49,6 +49,7 @@ public class BoardController {
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable int id , Model model){
         model.addAttribute("board", boardService.postDetail(id));
+        //eager 전략으로 댓글을 다 가지고 있는 board객체가 모델에 추가.
         return "board/updateForm";
     }
 }
