@@ -14,7 +14,8 @@ let index = {
         });
         $("#btn-reply-save").on("click",()=>{
             this.replySave();
-        })
+        });
+
     },
     save : function(){
         let data = {

@@ -42,7 +42,7 @@
     </div>
     <br />
     <div class="card">
-        <div class="card-header">댓글 리스트</div>
+        <div class="card-header">댓글을 써주세요</div>
         <ul id="reply-box" class="list-group">
             <c:forEach var = "reply" items="${board.replys}">
                 <li id="reply-${reply.id}" class="list-group-item d-flex justify-content-between">
@@ -50,7 +50,7 @@
                     <div class="d-flex">
                         <div class="font-italic">작성자 : ${reply.user.username}&nbsp;</div>
                         <c:if test = "${reply.user.id == principal.user.id }">
-                            <button onClick = "index.replyDelete(${board.id}, ${reply.id}" class="badge">삭제</button>
+                            <button onClick = "index.replyDelete(${board.id}, ${reply.id})" class="badge">삭제</button>
                         </c:if>
                     </div>
                 </li>
