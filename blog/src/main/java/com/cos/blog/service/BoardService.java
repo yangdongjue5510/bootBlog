@@ -8,6 +8,7 @@ import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
 import com.cos.blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +21,21 @@ import java.util.List;
 
 //스프링이 컴포넌트 스캔을 통해서 Bean에 자동 등록. IoC를 해줌
 @Service
+@RequiredArgsConstructor
 public class BoardService {
+/*@Autowired가 많으면 해야 할 일.
+    여러 DI된 객체들은
+    public BoardService(DI된 객체, DI된 객체....) 이런 생성자를 부르는 것과 같다.
+    그런데 매 DI객체마다 @Autowired하면 좀 지저분하니까...
+    각 객체를 final처리하고 본 클래스에 @RequiredArgsConstructor를 붙인다.
+    이 어노테이션은 초기화가 되지 않은 값을 생성자를 통해서 초기화 해달라는거다.
+    즉 @Autowired를 일일히 붙이는 것과 같은 역할.
+ */
 
-    @Autowired
-    private BoardRepository boardRepository;
-    @Autowired
-    private ReplyRepository replyRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final BoardRepository boardRepository;
+
+    private final ReplyRepository replyRepository;
+
 
     @Transactional
     public void writePost(Board board, User user){
