@@ -1,9 +1,11 @@
 package com.cos.blog.service;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import java.util.List;
 public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
     @Transactional
     public void writePost(Board board, User user){
         board.setCount(0);
@@ -55,6 +59,17 @@ public class BoardService {
         board.setContent(requestBoard.getContent());
         //이 메소드가 종료될 때, 트랜잭션이 종료된다.
         // 더티체킹이 하여 변화된 값이 존재하면, 자동으로 DB에 플러시해서 업데이트한다.
+    }
+
+    @Transactional
+    public void saveReply(User user, int boardId,  Reply requestReply){
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()->{
+                    return new IllegalArgumentException("댓글작성 실패 : 해당 게시물을 찾지 못함");
+                });
+        requestReply.setUser(user);
+        requestReply.setBoard(board);
+        replyRepository.save(requestReply);
     }
 }
 

@@ -3,6 +3,7 @@ package com.cos.blog.controller.api;
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.dto.ResponseDto;
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.service.BoardService;
 import com.cos.blog.service.UserService;
@@ -32,6 +33,14 @@ public class BoardApiController {
     @PutMapping("/api/board/{id}")
     public ResponseDto<Integer> update(@PathVariable int id , @RequestBody Board board){
         boardService.updatePost(id, board);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);//정상작동을 알림
+    }
+
+    //데이터를 받을 때 컨트롤러에서 dto를 만들어서 받는게 좋음
+    @PostMapping("/api/board/{boardId}/reply")
+    public ResponseDto<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principal){
+        boardService.saveReply(principal.getUser(), boardId, reply);
+
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);//정상작동을 알림
     }
 }
