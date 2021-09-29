@@ -87,9 +87,7 @@ let index = {
             boardId : $("#boardId").val(),
             userId : $("#userId").val()
         };
-
         $.ajax({
-            //글쓰기를 요청
             type : "POST",
             url : `/api/board/${data.boardId}/reply`,
             data : JSON.stringify(data), //자바가 js 객체를 인식못해서 json으로.
@@ -100,6 +98,19 @@ let index = {
             console.log(resp);
             alert("댓글 등록 완료!");
             location.href = `/board/${data.boardId}`;
+        }).fail(function (error) {
+            //실패시 수행
+            alert(JSON.stringify(error));
+        });
+    },
+    replyDelete : function(boardId, replyId){
+        $.ajax({
+            type : "DELETE",
+            url : `/api/board/${boardId}/reply/${replyId}`,
+            dataType : "json" //서버가 보낸 응답이 왔을때 생긴게 json이면 js오브젝트로 변환해서 parse!
+        }).done(function (resp) {//resp에는 json객체가 있겠죠.
+            alert("댓글 삭제 완료!");
+            location.href = `/board/${boardId}`;
         }).fail(function (error) {
             //실패시 수행
             alert(JSON.stringify(error));

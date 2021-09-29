@@ -81,5 +81,10 @@ public class BoardService {
         String content = replySaveRequestDto.getContent();
         replyRepository.mSave(userId, boardId, content);
     }
+
+    @Transactional
+    public void deleteReply(int replyId){
+        replyRepository.deleteById(replyId);
+    }
 }
 

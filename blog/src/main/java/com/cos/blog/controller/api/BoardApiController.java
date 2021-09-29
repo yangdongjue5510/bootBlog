@@ -43,4 +43,10 @@ public class BoardApiController {
         boardService.saveReply(replySaveRequestDto); //dto를 사용하면 한번에 데이터 준다!
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);//정상작동을 알림
     }
+
+    @DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+    public ResponseDto<Integer> replyDelete(@PathVariable int replyId){
+        boardService.deleteReply(replyId);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
 }
