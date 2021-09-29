@@ -1,5 +1,6 @@
 package com.cos.blog.service;
 
+import com.cos.blog.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
 import com.cos.blog.model.RoleType;
@@ -20,10 +21,14 @@ import java.util.List;
 //스프링이 컴포넌트 스캔을 통해서 Bean에 자동 등록. IoC를 해줌
 @Service
 public class BoardService {
+
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
     private ReplyRepository replyRepository;
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     public void writePost(Board board, User user){
         board.setCount(0);
@@ -62,13 +67,17 @@ public class BoardService {
     }
 
     @Transactional
-    public void saveReply(User user, int boardId,  Reply requestReply){
-        Board board = boardRepository.findById(boardId)
+    public void saveReply(ReplySaveRequestDto replySaveRequestDto){
+        User user = userRepository.findById(replySaveRequestDto.getUserId())
+                .orElseThrow(()->{
+                    return  new IllegalArgumentException("댓글작성 실패 : 해당 작성자 찾지 못함");
+                });
+        Board board = boardRepository.findById(replySaveRequestDto.getBoardId())
                 .orElseThrow(()->{
                     return new IllegalArgumentException("댓글작성 실패 : 해당 게시물을 찾지 못함");
                 });
-        requestReply.setUser(user);
-        requestReply.setBoard(board);
+        Reply requestReply = new Reply();
+        requestReply.update(user,board,replySaveRequestDto.getContent());
         replyRepository.save(requestReply);
     }
 }

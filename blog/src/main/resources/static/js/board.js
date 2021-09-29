@@ -84,12 +84,14 @@ let index = {
     replySave : function(){
         let data = {
             content: $("#reply-content").val(),
+            boardId : $("#boardId").val(),
+            userId : $("#userId").val()
         };
-        let boardId = $("#boardId").val()
+
         $.ajax({
             //글쓰기를 요청
             type : "POST",
-            url : `/api/board/${boardId}/reply`,
+            url : `/api/board/${data.boardId}/reply`,
             data : JSON.stringify(data), //자바가 js 객체를 인식못해서 json으로.
             contentType: "application/json; charset=utf-8", //바디 데이터가 어떤 타입인지
             dataType : "json" //서버가 보낸 응답이 왔을때 생긴게 json이면 js오브젝트로 변환해서 parse!
@@ -97,7 +99,7 @@ let index = {
             //성공시 수행
             console.log(resp);
             alert("댓글 등록 완료!");
-            location.href = `/board/${boardId}`;
+            location.href = `/board/${data.boardId}`;
         }).fail(function (error) {
             //실패시 수행
             alert(JSON.stringify(error));
