@@ -26,11 +26,17 @@ let index = {
             dataType : "json" //서버가 보낸 응답이 왔을때 생긴게 json이면 js오브젝트로 변환해서 parse!
         }).done(function (resp) {//resp에는 json객체가 있겠죠.
             //성공시 수행
+            if(resp.status === 200){
+                alert("회원가입완료");
+                location.href = "/"; //응답이 정상일때 출력할 링크
+            }else{
+                alert("회원가입에 실패했습니다...");
+            }
             console.log(resp);
-            alert("회원가입완료");
-            location.href = "/"; //응답이 정상일때 출력할 링크
+
         }).fail(function (error) {
             //실패시 수행
+            alert("회원가입에 실패했습니다...");
             alert(JSON.stringify(error)); //에러도 json객체로 바꿈
         });
     },

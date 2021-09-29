@@ -35,14 +35,15 @@ public class Board {
 
     //자바에서 객체를 저장하면, DB에서는 FK로 구현된다.
     //객체를 다루려면, 관계를 설정해줘야 한다.
-    @ManyToOne(fetch = FetchType.EAGER) //Many = Board, One = User 한 유저가 여러 게시물을 작성 가능한 관계.
+    @ManyToOne(fetch = FetchType.EAGER ) //Many = Board, One = User 한 유저가 여러 게시물을 작성 가능한 관계.
     //fetch 전략이 해당 클래스를 가져오면 반드시 가져온다.(게시물을 불러오면 user를 반드시 조인해서 불러와라!)
     @JoinColumn(name = "userId")//데이터베이스는 객체를 저장할 수 없으므로 userId라는 값이 대신 테이블에 저장된다.
     private User user; //DB에서는 오브젝트를 저장할 수 없다. 그래서 FK를 사용. 반면 자바는 오브젝트를 저장할 수 있다.
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     //LAZY : board를 불러온다고 무조건 가져올 필요는 없다!(기본값으로 설정되어잇음)
     //EAGER : 게시물이 불러오면 무조건 조인해서 가져와야됨!
+    //cascade REMOVE : 보드 객체 지우면 댓글도 같이 삭제
     @JsonIgnoreProperties({"board"})//무한참조를 막자!!
     @OrderBy("id desc")//자료를 정
     private List<Reply> replys;
